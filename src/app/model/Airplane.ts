@@ -1,5 +1,5 @@
 import { Airline } from "./Airline";
-import { AirplaneType } from "./airplaneType";
+import { AirplaneType } from "./AirplaneType";
 
 export class Airplane{
     airplaneId: number;

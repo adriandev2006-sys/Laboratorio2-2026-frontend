@@ -1,0 +1,44 @@
+<h1>Búsqueda de aeronaves por tipo</h1>
+
+<label for="type">Tipo de avión:</label>
+<select id="type" #typeSelect (change)="onTypeChange(typeSelect.value)"> <!--- Sentencia
+     propia de Angular, me dice que cuando se cambia el valor de "type" debe ejecutarse el componente lógico onTypeChange(typeSelect.value) -->
+  <option value="">-- Seleccione un tipo --</option>
+
+  @for (t of airplaneTypes(); track t.typeId) { <!--Se trae los valores de, signal airplanesTypes() 
+  , los asigna el id al campo "value" y muestra el indentifier-->
+    <option [value]="t.typeId">{{ t.identifier }}</option>
+  }
+</select>
+
+@if (selectedType(); as type) { <!--Si selecciona un valor (type), entonces se activa el selectedType-->
+  <h2>Aeronaves del tipo: {{ type.identifier }}</h2> 
+
+  @if (airplanes(); as list) { <!--Recibe los airplanes del componente como una lista 
+    y mediante un for va recorriendo uno por uno, acomodando -->
+    @if (list.length > 0) {
+      <table>
+        <thead>
+          <tr>
+            <th>ID aeronave</th>
+            <th>Capacidad de pasajeros</th>
+            <th>Aerolínea</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (a of list; track a.airplaneId) {
+            <tr>
+              <td>{{ a.airplaneId }}</td>
+              <td>{{ a.capacity }}</td>
+              <td>{{ a.airline?.airlineName ?? 'Sin aerolínea' }}</td> <!--Sino tiene nombre, entonces pone "Sin aerolínea"-->
+            </tr>
+          }
+        </tbody>
+      </table>
+    } @else { <!---En caso de error, manda un mensaje-->
+      <p class="empty-message">
+        El tipo de avión seleccionado no tiene aeronaves asociadas
+      </p>
+    }
+  }
+}
